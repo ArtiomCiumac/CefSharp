@@ -10,7 +10,7 @@ namespace CefSharp.Example
     {
         public static void Init()
         {
-            Settings settings = new Settings();
+            Settings settings = new Settings {LocalesDirPath = @".\"};
             if (CEF.Initialize(settings))
             {
                 CEF.RegisterScheme("test", new SchemeHandlerFactory());
