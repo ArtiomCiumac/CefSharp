@@ -17,8 +17,11 @@ namespace CefSharp
 
     void RenderClientAdapter::OnPaint(CefRefPtr<CefBrowser> browser, PaintElementType type, const RectList& dirtyRects, const void* buffer)
     {
+		System::Diagnostics::Debug::WriteLine(L"RenderClientAdapter OnPaint");
         if (type == PET_VIEW)
         {
+			System::Diagnostics::Debug::WriteLine(L"RenderClientAdapter type PET_VIEW");
+
             int width, height;
             browser->GetSize(type, width, height);
 
