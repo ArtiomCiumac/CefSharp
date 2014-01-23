@@ -327,7 +327,7 @@ namespace CefSharp
 			{
 				Focus();
 			}
-			
+            
             OnMouseButton(e);
             Mouse::Capture(this);
         }
@@ -340,7 +340,7 @@ namespace CefSharp
 
         void WebView::OnMouseLeave(MouseEventArgs^ e)
         {
-			CefRefPtr<CefBrowser> browser;
+            CefRefPtr<CefBrowser> browser;			
 
             if (TryGetCefBrowser(browser))
             {
@@ -642,8 +642,8 @@ namespace CefSharp
             _clientAdapter = new RenderClientAdapter(this);
 
             AddSourceHook();
-			            
-			CefWindowInfo window;
+
+            CefWindowInfo window;
 
 			if (_source != nullptr)
 			{
@@ -654,7 +654,7 @@ namespace CefSharp
 			{
 				window.SetAsOffScreen(NULL);
 			}
-					            
+			            
             window.SetTransparentPainting(TRUE);
             CefString url = toNative(_browserCore->Address);
 
@@ -772,8 +772,14 @@ namespace CefSharp
             InteropBitmap^& ibitmap, ActionHandler^ paintDelegate,
             const void* buffer)
         {
+			System::Diagnostics::Debug::WriteLine("SetBuffer enter");
+
+			System::Diagnostics::Debug::WriteLine(System::DateTime::Now);
+
             if (!backBufferHandle || currentWidth != width || currentHeight != height)
             {
+				System::Diagnostics::Debug::WriteLine("SetBuffer recalculating");
+
                 ibitmap = nullptr;
 
                 if (backBufferHandle)
@@ -813,6 +819,8 @@ namespace CefSharp
 
             if(!Dispatcher->HasShutdownStarted) {
                 Dispatcher->BeginInvoke(DispatcherPriority::Render, paintDelegate);
+				
+				OnRenderBrowser(this, gcnew EventArgs());
             }
         }
 

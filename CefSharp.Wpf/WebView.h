@@ -130,6 +130,8 @@ namespace CefSharp
             virtual event KeyEventHandler^ BrowserKey;
             virtual event LoadCompletedEventHandler^ LoadCompleted;
 
+			virtual event EventHandler^ OnRenderBrowser;
+
             WebView()
             {
                 Initialize(String::Empty, gcnew BrowserSettings);
