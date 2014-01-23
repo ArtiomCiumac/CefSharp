@@ -49,7 +49,7 @@ namespace CefSharp
 
         bool WebView::TryGetCefBrowser(CefRefPtr<CefBrowser>& browser)
         {
-            if (_browserCore->IsBrowserInitialized)
+            if (!_disposed && _browserCore->IsBrowserInitialized)
             {
                 browser = _clientAdapter->GetCefBrowser();
                 return browser != nullptr;
@@ -323,7 +323,8 @@ namespace CefSharp
 
         void WebView::OnMouseDown(MouseButtonEventArgs^ e)
         {
-            Focus();
+			Focus();
+			
             OnMouseButton(e);
             Mouse::Capture(this);
         }
@@ -336,10 +337,11 @@ namespace CefSharp
 
         void WebView::OnMouseLeave(MouseEventArgs^ e)
         {
-            CefRefPtr<CefBrowser> browser;
+			CefRefPtr<CefBrowser> browser;
+
             if (TryGetCefBrowser(browser))
             {
-                browser->SendMouseMoveEvent(0, 0, true);
+				browser->SendMouseMoveEvent(0, 0, true);
             }
 
             _toolTip->IsOpen = false;
@@ -602,7 +604,7 @@ namespace CefSharp
         }
 
         IDictionary<String^, Object^>^ WebView::GetBoundObjects()
-        {
+        {			
             return _browserCore->GetBoundObjects();
         }
 
@@ -637,10 +639,11 @@ namespace CefSharp
             _clientAdapter = new RenderClientAdapter(this);
 
             AddSourceHook();
-
-            HWND hwnd = static_cast<HWND>(_source->Handle.ToPointer());
-            CefWindowInfo window;
-            window.SetAsOffScreen(hwnd);
+			            
+			HWND hwnd = static_cast<HWND>(_source->Handle.ToPointer());
+			CefWindowInfo window;
+			window.SetAsOffScreen(hwnd);
+					            
             window.SetTransparentPainting(TRUE);
             CefString url = toNative(_browserCore->Address);
 
@@ -793,6 +796,7 @@ namespace CefSharp
                 currentHeight = height;
             }
 
+			
             int stride = width * PixelFormats::Bgr32.BitsPerPixel / 8;
             CopyMemory(backBufferHandle, (void*) buffer, height * stride);
 
@@ -888,7 +892,7 @@ namespace CefSharp
         }
 
         void WebView::HidePopup()
-        {
+        {			
             CefRefPtr<CefBrowser> browser;
             if (_popup != nullptr && _popup->IsOpen && TryGetCefBrowser(browser))
             {           
@@ -909,7 +913,7 @@ namespace CefSharp
 
                     _hook = gcnew Interop::HwndSourceHook(this, &WebView::SourceHook);
                     _source->AddHook(_hook);
-                }
+                }				
             }
         }
     }}

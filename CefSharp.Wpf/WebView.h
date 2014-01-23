@@ -41,6 +41,8 @@ namespace CefSharp
             Popup^ _popup;
             DispatcherTimer^ _timer;
 
+			bool _disposed;
+
             Image^ _image;
             int _width, _height;
             InteropBitmap^ _ibitmap;
@@ -140,6 +142,7 @@ namespace CefSharp
 
             ~WebView()
             {
+				_disposed = true;
                 if (_source && _hook)
                 {
                     _source->RemoveHook(_hook);
