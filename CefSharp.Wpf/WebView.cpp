@@ -924,7 +924,11 @@ namespace CefSharp
 
                     _hook = gcnew Interop::HwndSourceHook(this, &WebView::SourceHook);
                     _source->AddHook(_hook);
-                }				
+                }
+				else
+				{
+					_matrix = Matrix::Identity;
+				}
             }
         }
     }}
