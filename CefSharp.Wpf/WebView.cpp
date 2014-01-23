@@ -323,7 +323,10 @@ namespace CefSharp
 
         void WebView::OnMouseDown(MouseButtonEventArgs^ e)
         {
-			Focus();
+			if(!IsFocused)
+			{
+				Focus();
+			}
 			
             OnMouseButton(e);
             Mouse::Capture(this);
