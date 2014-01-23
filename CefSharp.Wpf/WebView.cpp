@@ -643,9 +643,17 @@ namespace CefSharp
 
             AddSourceHook();
 			            
-			HWND hwnd = static_cast<HWND>(_source->Handle.ToPointer());
 			CefWindowInfo window;
-			window.SetAsOffScreen(hwnd);
+
+			if (_source != nullptr)
+			{
+				HWND hwnd = static_cast<HWND>(_source->Handle.ToPointer());
+				window.SetAsOffScreen(hwnd);
+			}
+			else 
+			{
+				window.SetAsOffScreen(NULL);
+			}
 					            
             window.SetTransparentPainting(TRUE);
             CefString url = toNative(_browserCore->Address);
