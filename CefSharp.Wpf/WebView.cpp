@@ -191,7 +191,7 @@ namespace CefSharp
             }
 
             if (e->Key == Key::Tab ||
-                e->Key >= Key::Left && e->Key <= Key::Down)
+                (e->Key >= Key::Left && e->Key <= Key::Down))
             {
                 CefBrowser::KeyType type = e->IsDown ? KT_KEYDOWN : KT_KEYUP;
                 CefKeyInfo keyInfo;
@@ -200,6 +200,25 @@ namespace CefSharp
 
                 e->Handled = true;
             }
+        }
+
+        void WebView::OnPreviewTextInput(TextCompositionEventArgs^ e)
+        {
+            CefRefPtr<CefBrowser> browser;
+            if (!TryGetCefBrowser(browser))
+            {
+                return;
+            }
+
+            CefBrowser::KeyType type;
+            for (int i = 0; i < e->Text->Length; i++)
+            {
+                CefKeyInfo keyInfo;
+                keyInfo.key = (int)e->Text[i];
+                type = KT_CHAR; 
+                browser->SendKeyEvent(type, keyInfo, 0);
+            }
+            e->Handled = true;
         }
 
         void WebView::OnMouseButton(MouseButtonEventArgs^ e)
@@ -649,7 +668,7 @@ namespace CefSharp
 
             Content = _image = gcnew Image();
             RenderOptions::SetBitmapScalingMode(_image, BitmapScalingMode::NearestNeighbor);
-            
+
             _popup = gcnew Popup();
             _popup->Child = _popupImage = gcnew Image();
 
@@ -683,7 +702,7 @@ namespace CefSharp
         {
             // If the display properties is set to e.g. 125%, M11 and M22 will be 1.25.
             return _matrix->M11 != 1 ||
-                   _matrix->M22 != 1;
+                _matrix->M22 != 1;
         }
 
         Transform^ WebView::GetScaleTransform()
@@ -804,7 +823,7 @@ namespace CefSharp
         void WebView::SetPopupSizeAndPosition(const void* rect)
         {
             auto cefRect = (const CefRect*) rect;
-            
+
             _popupX = cefRect->x;
             _popupY = cefRect->y;
             _popupWidth = cefRect->width;
