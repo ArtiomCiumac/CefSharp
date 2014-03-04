@@ -101,8 +101,12 @@ namespace CefSharp
 
         protected:
             virtual Size ArrangeOverride(Size size) override;
-            virtual void OnGotFocus(RoutedEventArgs^ e) override;
+            virtual void OnGotFocus(RoutedEventArgs^ e) override;			
             virtual void OnLostFocus(RoutedEventArgs^ e) override;
+			virtual void OnGotKeyboardFocus(KeyboardFocusChangedEventArgs^ e) override;
+			virtual void OnLostKeyboardFocus(KeyboardFocusChangedEventArgs^ e) override;
+			virtual void OnGotMouseCapture(MouseEventArgs^ e) override; 
+			virtual void OnLostMouseCapture(MouseEventArgs^ e) override;
             virtual void OnPreviewKeyDown(KeyEventArgs^ e) override;
             virtual void OnPreviewKeyUp(KeyEventArgs^ e) override;
 

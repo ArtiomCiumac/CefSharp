@@ -118,6 +118,8 @@ namespace CefSharp
                     break;
                 }
 
+				System::Diagnostics::Debug::WriteLine("SourceHook {0} {1} {2} {3}", message, wParam.ToInt32(), lParam.ToInt32(), GetHashCode());
+
                 CefBrowser::KeyType type;
                 if (message == WM_CHAR || message == WM_IME_CHAR)
                     type = KT_CHAR;
@@ -189,7 +191,7 @@ namespace CefSharp
             {
                 return;
             }
-
+			System::Diagnostics::Debug::WriteLine(String::Format("OnPreviewKey {0} {1} {2}", e->Key, e->IsDown, GetHashCode()));
             if (e->Key == Key::Tab ||
                 e->Key >= Key::Left && e->Key <= Key::Down)
             {
@@ -267,27 +269,83 @@ namespace CefSharp
 
         void WebView::OnGotFocus(RoutedEventArgs^ e)
         {
+			System::Diagnostics::Debug::WriteLine( "OnGotFocus {0}", GetHashCode());
             CefRefPtr<CefBrowser> browser;
             if (TryGetCefBrowser(browser))
             {
                 browser->SendFocusEvent(true);
+				//browser->SetFocus(true);
             }
 
             ContentControl::OnGotFocus(e);
         }
 
-        void WebView::OnLostFocus(RoutedEventArgs^ e)
+		void WebView::OnLostFocus(RoutedEventArgs^ e)
         {
+			System::Diagnostics::Debug::WriteLine( "OnLostFocus {0}", GetHashCode());
+
             CefRefPtr<CefBrowser> browser;
             if (TryGetCefBrowser(browser))
             {
                 browser->SendFocusEvent(false);
+				//browser->SetFocus(false);
+				//browser->SendCaptureLostEvent();
             }
 
             HidePopup();
 
             ContentControl::OnLostFocus(e);
         }
+
+		void WebView::OnGotKeyboardFocus(KeyboardFocusChangedEventArgs^ e)
+		{
+			//System::Diagnostics::Debug::WriteLine(L"OnGotKeyboardFocus");
+			System::Diagnostics::Debug::WriteLine( "OnGotKeyboardFocus {0}", GetHashCode());
+
+			CefRefPtr<CefBrowser> browser;
+            if (TryGetCefBrowser(browser))
+            {
+                //browser->SendFocusEvent(true);
+            }
+			
+			ContentControl::OnGotKeyboardFocus(e);
+		}
+
+		void WebView::OnLostKeyboardFocus(KeyboardFocusChangedEventArgs^ e) 
+		{
+			System::Diagnostics::Debug::WriteLine( "OnLostKeyboardFocus {0}", GetHashCode());
+			CefRefPtr<CefBrowser> browser;
+            if (TryGetCefBrowser(browser))
+            {
+				//browser->SendCaptureLostEvent();
+            }
+
+			ContentControl::OnLostKeyboardFocus(e);
+		}
+
+		void WebView::OnGotMouseCapture(MouseEventArgs^ e) 
+		{
+			System::Diagnostics::Debug::WriteLine( "OnGotMouseCapture {0}", GetHashCode());
+			CefRefPtr<CefBrowser> browser;
+            if (TryGetCefBrowser(browser))
+            {
+                //browser->SendFocusEvent(true);
+            }
+
+			ContentControl::OnGotMouseCapture(e);
+		}
+		
+		void WebView::OnLostMouseCapture(MouseEventArgs^ e) 
+		{
+			System::Diagnostics::Debug::WriteLine( "OnLostMouseCapture {0}", GetHashCode());
+			CefRefPtr<CefBrowser> browser;
+            if (TryGetCefBrowser(browser))
+            {
+				//browser->SendFocusEvent(false);
+            }
+
+			ContentControl::OnLostMouseCapture(e);
+		}
 
         void WebView::OnPreviewKeyDown(KeyEventArgs^ e)
         {
@@ -568,6 +626,8 @@ namespace CefSharp
             {
                 _scriptCore->Execute(browser, toNative(script));
             }
+
+			
         }
 
         Object^ WebView::EvaluateScript(String^ script)
@@ -772,13 +832,13 @@ namespace CefSharp
             InteropBitmap^& ibitmap, ActionHandler^ paintDelegate,
             const void* buffer)
         {
-			System::Diagnostics::Debug::WriteLine("SetBuffer enter");
+			System::Diagnostics::Debug::WriteLine(String::Format("SetBuffer enter {0}", GetHashCode()));
 
-			System::Diagnostics::Debug::WriteLine(System::DateTime::Now);
+			//System::Diagnostics::Debug::WriteLine(System::DateTime::Now);
 
             if (!backBufferHandle || currentWidth != width || currentHeight != height)
             {
-				System::Diagnostics::Debug::WriteLine("SetBuffer recalculating");
+				System::Diagnostics::Debug::WriteLine(String::Format("SetBuffer recalculating {0}", GetHashCode()));
 
                 ibitmap = nullptr;
 
