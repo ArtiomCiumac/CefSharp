@@ -6,6 +6,10 @@ using System.Windows.Input;
 
 namespace CefSharp.Wpf.Example
 {
+    using System.Windows.Controls;
+    using System.Windows.Media;
+    using System.Windows.Media.Imaging;
+
     public partial class MainWindow : Window, IExampleView
     {
         // file
@@ -80,6 +84,8 @@ namespace CefSharp.Wpf.Example
                 { backButton, BackActivated },
                 { forwardButton, ForwardActivated },
             };
+
+            
         }
 
         public void SetTitle(string title)
@@ -149,6 +155,32 @@ namespace CefSharp.Wpf.Example
         public void SetZoomLevel(object sender, RoutedPropertyChangedEventArgs<double> zoomLevelArgs)
         {
             web_view.ZoomLevel = zoomLevelArgs.NewValue;
+        }
+
+        private void ForwardButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var width = (int) web_view.ActualWidth;
+            var height = (int) web_view.ActualHeight;
+            var rtb = new RenderTargetBitmap(width,
+                                             height,
+                                             96.0,
+                                             96.0,
+                                             PixelFormats.Default);
+
+            web_view.ExecuteScript(@"Response.set([""ChoiceB;Choice2""])");
+
+            web_view.ShowDevTools();
+
+            rtb.Render(web_view);
+
+            var w= new Window();
+            w.Content = new Image
+                            {
+                                Source = rtb
+                            };
+
+            w.ShowDialog();
+
         }
     }
 }

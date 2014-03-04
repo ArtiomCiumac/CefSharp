@@ -18,7 +18,8 @@ namespace CefSharp.Example
             }
         }
 
-        private const string home_url = "http://github.com/cefsharp/CefSharp";
+        //private const string home_url = "http://github.com/cefsharp/CefSharp";
+        private const string home_url = @"C:\Projects\Main\src\Edi.Advance.Tdp\Edi.Advance.Wpf.Html\Examples\PairAutoWithKeys.html";
         private const string resource_url = "http://test/resource/load";
         private const string scheme_url = "test://test/SchemeTest.html";
         private const string bind_url = "test://test/BindingTest.html";
