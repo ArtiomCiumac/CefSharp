@@ -150,7 +150,7 @@ namespace CefSharp
             InteropBitmap^ bitmap = _ibitmap;
             msclr::lock l(_sync);
 
-            if(bitmap == nullptr) 
+            if(bitmap == nullptr || IsRenderOptimizationDisabled) 
             {
                 _image->Source = nullptr;
                 GC::Collect(1);
@@ -162,6 +162,7 @@ namespace CefSharp
                 _ibitmap = bitmap;
             }
 
+			System::Diagnostics::Debug::WriteLine(System::String::Format("SetBitmap {0}", GetHashCode()));
             bitmap->Invalidate();
         }
 
@@ -720,8 +721,8 @@ namespace CefSharp
 
             CefBrowser::CreateBrowser(window, _clientAdapter.get(),
                 url, *(CefBrowserSettings*)_settings->_internalBrowserSettings);
-
-            Content = _image = gcnew Image();
+			
+			Content = _image = gcnew Image();
             RenderOptions::SetBitmapScalingMode(_image, BitmapScalingMode::NearestNeighbor);
             
             _popup = gcnew Popup();

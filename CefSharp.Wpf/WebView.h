@@ -43,7 +43,7 @@ namespace CefSharp
 
 			bool _disposed;
 
-            Image^ _image;
+            Image^ _image;			
             int _width, _height;
             InteropBitmap^ _ibitmap;
             HANDLE _fileMappingHandle, _backBufferHandle;
@@ -117,6 +117,8 @@ namespace CefSharp
             virtual void OnMouseLeave(MouseEventArgs^ e) override;
 
         public:
+			static bool IsRenderOptimizationDisabled;
+
             virtual event PropertyChangedEventHandler^ PropertyChanged
             {
                 void add(PropertyChangedEventHandler^ handler)
