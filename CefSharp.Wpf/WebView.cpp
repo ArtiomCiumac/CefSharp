@@ -118,7 +118,9 @@ namespace CefSharp
                     break;
                 }
 
+#ifdef DEBUG
 				System::Diagnostics::Debug::WriteLine("SourceHook {0} {1} {2} {3}", message, wParam.ToInt32(), lParam.ToInt32(), GetHashCode());
+#endif
 
                 CefBrowser::KeyType type;
                 if (message == WM_CHAR || message == WM_IME_CHAR)
@@ -162,7 +164,10 @@ namespace CefSharp
                 _ibitmap = bitmap;
             }
 
+#ifdef DEBUG
 			System::Diagnostics::Debug::WriteLine(System::String::Format("SetBitmap {0}", GetHashCode()));
+#endif
+
             bitmap->Invalidate();
         }
 
@@ -192,7 +197,10 @@ namespace CefSharp
             {
                 return;
             }
+
+#ifdef DEBUG
 			System::Diagnostics::Debug::WriteLine(String::Format("OnPreviewKey {0} {1} {2}", e->Key, e->IsDown, GetHashCode()));
+#endif
             if (e->Key == Key::Tab ||
                 e->Key >= Key::Left && e->Key <= Key::Down)
             {
@@ -270,7 +278,9 @@ namespace CefSharp
 
         void WebView::OnGotFocus(RoutedEventArgs^ e)
         {
+#ifdef DEBUG
 			System::Diagnostics::Debug::WriteLine( "OnGotFocus {0}", GetHashCode());
+#endif
             CefRefPtr<CefBrowser> browser;
             if (TryGetCefBrowser(browser))
             {
@@ -283,7 +293,9 @@ namespace CefSharp
 
 		void WebView::OnLostFocus(RoutedEventArgs^ e)
         {
+#ifdef DEBUG
 			System::Diagnostics::Debug::WriteLine( "OnLostFocus {0}", GetHashCode());
+#endif
 
             CefRefPtr<CefBrowser> browser;
             if (TryGetCefBrowser(browser))
@@ -301,7 +313,9 @@ namespace CefSharp
 		void WebView::OnGotKeyboardFocus(KeyboardFocusChangedEventArgs^ e)
 		{
 			//System::Diagnostics::Debug::WriteLine(L"OnGotKeyboardFocus");
+		#ifdef DEBUG
 			System::Diagnostics::Debug::WriteLine( "OnGotKeyboardFocus {0}", GetHashCode());
+		#endif
 
 			CefRefPtr<CefBrowser> browser;
             if (TryGetCefBrowser(browser))
@@ -314,7 +328,10 @@ namespace CefSharp
 
 		void WebView::OnLostKeyboardFocus(KeyboardFocusChangedEventArgs^ e) 
 		{
+		#ifdef DEBUG
 			System::Diagnostics::Debug::WriteLine( "OnLostKeyboardFocus {0}", GetHashCode());
+		#endif
+
 			CefRefPtr<CefBrowser> browser;
             if (TryGetCefBrowser(browser))
             {
@@ -326,7 +343,9 @@ namespace CefSharp
 
 		void WebView::OnGotMouseCapture(MouseEventArgs^ e) 
 		{
+		#ifdef DEBUG
 			System::Diagnostics::Debug::WriteLine( "OnGotMouseCapture {0}", GetHashCode());
+		#endif
 			CefRefPtr<CefBrowser> browser;
             if (TryGetCefBrowser(browser))
             {
@@ -338,7 +357,9 @@ namespace CefSharp
 		
 		void WebView::OnLostMouseCapture(MouseEventArgs^ e) 
 		{
+#ifdef DEBUG
 			System::Diagnostics::Debug::WriteLine( "OnLostMouseCapture {0}", GetHashCode());
+#endif
 			CefRefPtr<CefBrowser> browser;
             if (TryGetCefBrowser(browser))
             {
@@ -833,13 +854,17 @@ namespace CefSharp
             InteropBitmap^& ibitmap, ActionHandler^ paintDelegate,
             const void* buffer)
         {
+#ifdef DEBUG
 			System::Diagnostics::Debug::WriteLine(String::Format("SetBuffer enter {0}", GetHashCode()));
+#endif
 
 			//System::Diagnostics::Debug::WriteLine(System::DateTime::Now);
 
             if (!backBufferHandle || currentWidth != width || currentHeight != height)
             {
+#ifdef DEBUG
 				System::Diagnostics::Debug::WriteLine(String::Format("SetBuffer recalculating {0}", GetHashCode()));
+#endif
 
                 ibitmap = nullptr;
 
