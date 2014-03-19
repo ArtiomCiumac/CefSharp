@@ -154,6 +154,8 @@ namespace CefSharp
 
             if(bitmap == nullptr || IsRenderOptimizationDisabled) 
             {
+				bitmap = nullptr;
+				_ibitmap = nullptr;
                 _image->Source = nullptr;
                 GC::Collect(1);
 
@@ -240,6 +242,8 @@ namespace CefSharp
 
         void WebView::OnVisualParentChanged(DependencyObject^ oldParent)
         {
+			if(_disposed) return;
+
             EventHandler^ _handler = gcnew EventHandler(this, &WebView::OnHidePopup);
 
             if (_currentWindow != nullptr)
