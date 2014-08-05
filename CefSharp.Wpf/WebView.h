@@ -150,28 +150,29 @@ namespace CefSharp
 
             ~WebView()
             {
-				
-
-				if (_currentWindow != nullptr)
+				//if(!_disposed)
 				{
-					EventHandler^ _handler = gcnew EventHandler(this, &WebView::OnHidePopup);
-					_currentWindow->LocationChanged -= _handler;
-					_currentWindow->Deactivated -= _handler;
+					if (_currentWindow != nullptr)
+					{
+						EventHandler^ _handler = gcnew EventHandler(this, &WebView::OnHidePopup);
+						_currentWindow->LocationChanged -= _handler;
+						_currentWindow->Deactivated -= _handler;
+					}
+
+					if (_source && _hook)
+					{
+						_source->RemoveHook(_hook);
+					}
+
+					CefRefPtr<CefBrowser> browser;
+					if (TryGetCefBrowser(browser))
+					{
+						browser->CloseBrowser();
+					}
+
+					_ibitmap = nullptr;
+					_disposed = true;
 				}
-
-                if (_source && _hook)
-                {
-                    _source->RemoveHook(_hook);
-                }
-
-				CefRefPtr<CefBrowser> browser;
-                if (TryGetCefBrowser(browser))
-                {
-                    browser->CloseBrowser();
-                }
-
-				_ibitmap = nullptr;
-				_disposed = true;
             }
 
             virtual property bool IsBrowserInitialized
