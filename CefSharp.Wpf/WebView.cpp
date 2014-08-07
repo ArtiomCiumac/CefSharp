@@ -15,6 +15,8 @@ namespace CefSharp
                 throw gcnew InvalidOperationException("CEF::Initialize() failed");
             }
 
+			_disposed = false;
+
             Focusable = true;
             FocusVisualStyle = nullptr;
             IsTabStop = true;

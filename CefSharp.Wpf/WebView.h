@@ -150,7 +150,7 @@ namespace CefSharp
 
             ~WebView()
             {
-				//if(!_disposed)
+				if(!_disposed)
 				{
 					if (_currentWindow != nullptr)
 					{
