@@ -1,0 +1,1 @@
+v 0.1.0 - Dispose fixed allow multiple dispose invocations
